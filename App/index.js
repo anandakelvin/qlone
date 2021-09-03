@@ -1,14 +1,16 @@
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./screens/HomeScreen";
 import AssetScreen from "./screens/AssetScreen";
 import colors from "./constants/colors";
 import VisitEntryScreen from "./screens/VisitEntryScreen";
+import NewCarScreen from "./screens/NewCarScreen";
+import { AppContext } from "./contexts/AppContext";
+import CameraScreen from "./screens/CameraScreen";
 
 const Stack = createStackNavigator();
 
-export const AppContext = createContext();
 const initialCars = {
   a1s1d2d3d4: {
     brand: "Honda",
@@ -36,12 +38,14 @@ export default function App() {
     <AppContext.Provider value={{ cars, histories, setCars, setHistories }}>
       <NavigationContainer
         theme={{
-          ...DefaultTheme,
-          colors: { ...DefaultTheme.colors, background: colors.white },
+          ...DarkTheme,
+          colors: { ...DarkTheme.colors, background: colors.white },
         }}
       >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Camera" component={CameraScreen} />
+          <Stack.Screen name="NewCar" component={NewCarScreen} />
           <Stack.Screen name="Asset" component={AssetScreen} />
           <Stack.Screen name="VisitEntry" component={VisitEntryScreen} />
         </Stack.Navigator>

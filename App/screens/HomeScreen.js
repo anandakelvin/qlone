@@ -44,11 +44,16 @@ export default ({ navigation }) => {
             style={{ flex: 1, marginHorizontal: 15 }}
             placeholder="Merk, model, tipe, no polisi"
           />
-          <AntDesign name="qrcode" size={25} />
+          <TouchableOpacity onPressOut={() => navigation.navigate("Camera")}>
+            <AntDesign name="qrcode" size={25} />
+          </TouchableOpacity>
         </View>
       </Subheader>
-      <View style={{ flexDirection: "row", margin: 15 }}>
-        <SimpleButton text="Semua" />
+      <View style={{ flexDirection: "row", margin: 15, marginBottom: 0 }}>
+        <SimpleButton
+          onPress={() => navigation.navigate("NewCar")}
+          text="Semua"
+        />
       </View>
 
       {loading ? (
@@ -56,7 +61,8 @@ export default ({ navigation }) => {
       ) : cars && Object.entries(cars)[0] ? (
         <View style={{ flex: 1 }}>
           <FlatList
-            style={{ padding: 15 }}
+            style={{ padding: 10 }}
+            contentContainerStyle={{ paddingBottom: 20 }}
             data={Object.entries(cars)}
             keyExtractor={(item) => item[0]}
             renderItem={({ item }) => {

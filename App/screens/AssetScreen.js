@@ -24,9 +24,7 @@ export default ({ route, navigation }) => {
   return (
     <MyScreen loading={loading || loadingHistories}>
       <Header navigation={navigation} title={car && car.police} />
-      <Subheader>
-        <View style={{ height: 50 }} />
-      </Subheader>
+      <Subheader />
       <Text
         style={{
           fontSize: 25,
@@ -55,39 +53,36 @@ export default ({ route, navigation }) => {
       </View>
       <View
         style={{
-          marginVertical: 30,
+          marginTop: 30,
           borderTopWidth: 15,
           borderBottomWidth: 15,
           borderColor: colors.headerSearch,
           padding: 15,
         }}
       >
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
+        {!loading && (
           <LargeButton
             onPressOut={() => navigation.navigate("VisitEntry", { carId })}
             text="Catat Kunjungan"
           />
         )}
       </View>
-      {loading ? (
-        <></>
-      ) : (
+      {!loading &&
         carsHistories &&
         Object.entries(carsHistories).filter(
           (el) => el[1].carId === carId
         )[0] && (
           <View style={{ flex: 1 }}>
             <FlatList
-              style={{ padding: 15 }}
+              style={{ padding: 10 }}
+              contentContainerStyle={{ paddingBottom: 20 }}
               data={Object.entries(carsHistories).filter(
                 (el) => el[1].carId === carId
               )}
               keyExtractor={(item) => item[0]}
               renderItem={({ item }) => {
                 const history = item[1];
-                const carId = item[0];
+                const historyId = item[0];
                 return (
                   <ListItem
                   // onPressOut={() => navigation.navigate("Asset", { carId })}
@@ -112,8 +107,7 @@ export default ({ route, navigation }) => {
               }}
             />
           </View>
-        )
-      )}
+        )}
     </MyScreen>
   );
 };

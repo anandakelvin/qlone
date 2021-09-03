@@ -13,11 +13,12 @@ export default function InputFrame({ label, children }) {
 
 const styles = StyleSheet.create({
   label: {
+    fontWeight: "bold",
     position: "absolute",
     color: colors.black,
     paddingHorizontal: 3,
     top: -12,
-    left: 40,
+    left: 30,
     backgroundColor: colors.white,
   },
   container: {

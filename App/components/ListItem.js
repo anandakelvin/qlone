@@ -14,7 +14,8 @@ export default ({ children, ...props }) => {
         borderColor: colors.lightGrey,
         backgroundColor: colors.white,
         borderWidth: 1,
-        marginVertical: 5,
+        margin: 7,
+        marginBottom: 7,
       }}
       {...props}
     >

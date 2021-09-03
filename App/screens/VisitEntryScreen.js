@@ -7,21 +7,19 @@ import MyHeader from "../components/MyHeader";
 import MyScreen from "../components/MyScreen";
 import Subheader from "../components/Subheader";
 import LargeButton from "../components/LargeButton";
-import { AppContext } from "..";
 import { delay } from "../utils/helper";
 import { nanoid } from "nanoid/non-secure";
+import { AppContext } from "../contexts/AppContext";
 
 export default ({ route, navigation }) => {
   const { setHistories } = useContext(AppContext);
-  const { carId } = route.params;
   const [loading, setLoading] = useState(false);
+  const { carId } = route.params;
 
   return (
     <MyScreen loading={loading}>
-      <Header navigation={navigation} title="Catat kunjungan" />
-      <Subheader>
-        <View style={{ height: 50 }} />
-      </Subheader>
+      <Header navigation={navigation} title="Catat Kunjungan" />
+      <Subheader />
       <Formik
         initialValues={{ kilometre: "", note: "" }}
         onSubmit={({ kilometre, note }) => {

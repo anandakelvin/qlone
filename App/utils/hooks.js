@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "..";
+import { AppContext } from "../contexts/AppContext";
 import { delay } from "./helper";
 
 const useFetch = (val) => {
