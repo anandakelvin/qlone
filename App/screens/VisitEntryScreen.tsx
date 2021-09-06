@@ -10,15 +10,17 @@ import LargeButton from "../components/LargeButton";
 import { delay } from "../utils";
 import { nanoid } from "nanoid/non-secure";
 import { AppContext } from "../contexts";
-import { CarRecord, CarRecords } from "../types";
+import { CarRecord, CarRecords, RootStackParamList } from "../types";
 import { useFocusEffect } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const initialFormikValues: CarRecord = {
-  km: "", note: "", carId: "", timestamp: 0,
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'VisitEntry'>;
 
-export default ({ route, navigation }) => {
+export default ({ route, navigation }: Props) => {
+  const initialFormikValues: CarRecord = {
+    km: "", note: "", carId: "", timestamp: 0,
+  }
   const { setRecords } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const formik = useFormik({

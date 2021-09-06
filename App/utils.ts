@@ -1,13 +1,11 @@
-import { Car, CarRecord } from "./types";
-
 export const delay = async () => {
   return new Promise((resolve, error) => {
     setTimeout(resolve, 1000);
   });
 };
 
-export const validateCar = (values: Car) => {
-  const errors: {[key: string]: string} = {};
+export const validateCar = (values: any) => {
+  const errors: any = {};
 
   if (!values.name) {
     errors.name = 'Required';
@@ -17,8 +15,8 @@ export const validateCar = (values: Car) => {
 
   if (!values.police) {
     errors.police = 'Required';
-  } else if (values.police.length > 9) {
-    errors.lastName = 'Must be 9 characters or less';
+  } else if (values.police.length > 11) {
+    errors.police = 'Must be 11 characters or less';
   }
 
   return errors;

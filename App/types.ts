@@ -27,3 +27,11 @@ export type CarRecords = {
 export type AppContextType = {
 	car: Car, record: CarRecord, 
 }
+
+export type RootStackParamList = {
+	Home: undefined;
+  NewCar: { name: string };
+	Asset: { carId: string };
+	VisitEntry: { carId: string };
+	Camera: undefined;
+};

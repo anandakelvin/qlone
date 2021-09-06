@@ -15,10 +15,13 @@ import MyScreen from "../components/MyScreen";
 import SimpleButton from "../components/SimpleButton";
 import Subheader from "../components/Subheader";
 import colors from "../constants/colors";
-import { CarRecord } from "../types";
+import { CarRecord, RootStackParamList } from "../types";
 import { useFetchCar, useFetchHistories } from "../hooks";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default ({ route, navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Asset'>;
+
+export default ({ route, navigation }: Props) => {
   const { carId } = route.params;
   const [car, loading] = useFetchCar(carId);
   const [records, loadingRecords] = useFetchHistories();
@@ -63,7 +66,6 @@ export default ({ route, navigation }) => {
               renderItem={({ item }) => {
                 const record: CarRecord = item[1];
                 const recordId: string = item[0];
-                console.log(record.km)
                 return (
                   <ListItem>
                     <FontAwesome name="car" size={35} />

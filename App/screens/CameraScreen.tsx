@@ -5,8 +5,12 @@ import MyScreen from "../components/MyScreen";
 import { useIsFocused } from "@react-navigation/native";
 import Subheader from "../components/Subheader";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../types";
 
-export default function CameraScreen({ route, navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'Camera'>;
+
+export default ({ route, navigation }: Props) => {
   const [hasPermission, setHasPermission] = useState(null);
   const isFocused = useIsFocused();
 

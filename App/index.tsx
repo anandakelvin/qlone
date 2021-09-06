@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./screens/HomeScreen";
 import AssetScreen from "./screens/AssetScreen";
@@ -8,9 +9,9 @@ import VisitEntryScreen from "./screens/VisitEntryScreen";
 import NewCarScreen from "./screens/NewCarScreen";
 import CameraScreen from "./screens/CameraScreen";
 import { AppContext } from "./contexts";
-import { CarRecords, Cars, FuelType, Transmission } from "./types";
+import { CarRecords, Cars, FuelType, RootStackParamList, Transmission } from "./types";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const initialCars = {
   a1s1d2d3d4: {

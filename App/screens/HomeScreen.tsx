@@ -21,8 +21,12 @@ import Subheader from "../components/Subheader";
 import SimpleButton from "../components/SimpleButton";
 import { useFetchCars } from "../hooks";
 import ListItem from "../components/ListItem";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../types";
 
-export default ({ navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export default ({ route, navigation }: Props) => {
   const [cars, loading] = useFetchCars();
 
   return (
@@ -35,7 +39,7 @@ export default ({ navigation }) => {
             style={{ flex: 1, marginHorizontal: 15 }}
             placeholder="Merk, model, tipe, no polisi"
           />
-          <TouchableOpacity onPressOut={() => navigation.navigate("Camera")}>
+          <TouchableOpacity onPressOut={() => navigation.navigate('Camera')}>
             <AntDesign name="qrcode" size={25} />
           </TouchableOpacity>
         </View>
@@ -58,7 +62,7 @@ export default ({ navigation }) => {
               const carId = item[0];
               return (
                 <ListItem
-                  onPressOut={() => navigation.navigate("Asset", { carId })}
+                  onPressOut={() => navigation.navigate('Asset', {carId})}
                 >
                   <FontAwesome name="car" size={35} />
                   <View style={{ marginLeft: 15 }}>

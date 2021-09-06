@@ -17,18 +17,19 @@ import { Picker } from "@react-native-picker/picker";
 import { delay, validateCar } from "../utils";
 import { nanoid } from "nanoid/non-secure";
 import { AppContext } from "../contexts";
-import { Car, Cars, FuelType, Transmission } from "../types";
-import { useFocusEffect } from "@react-navigation/native";
+import { Car, Cars, FuelType, RootStackParamList, Transmission } from "../types";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const initialFormikValues: Car = {
-  fuelType: "",
-  police: "",
-  name: "",
-  year: "",
-  transmission: "",
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'NewCar'>;
 
-export default ({ route, navigation }) => {
+export default ({ route, navigation }: Props) => {
+  const initialFormikValues: Car = {
+    fuelType: "",
+    police: "",
+    name: route.params ? route.params.name : '',
+    year: "",
+    transmission: "",
+  }
   const { setCars } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
@@ -36,6 +37,7 @@ export default ({ route, navigation }) => {
     onSubmit: handleSubmit,
     validate: validateCar
   });
+
 
   function handleSubmit(val: Car){
     setLoading(() => true);
@@ -47,10 +49,6 @@ export default ({ route, navigation }) => {
       navigation.navigate("Home");
     });
   }
-  
-  useFocusEffect(useCallback(()=>{
-    formik.setFieldValue('name', route.params.name)
-  }, []))
 
   return (
     <MyScreen loading={loading}>
