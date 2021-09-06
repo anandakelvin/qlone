@@ -5,6 +5,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import MyScreen from "../components/MyScreen";
 import {
@@ -28,17 +29,7 @@ export default ({ navigation }) => {
     <MyScreen loading={loading}>
       <Header />
       <Subheader>
-        <View
-          style={{
-            padding: 12,
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            backgroundColor: colors.headerSearch,
-            opacity: 50,
-            borderRadius: 15,
-          }}
-        >
+        <View style={styles.subHeaderContainer}>
           <Feather name="search" size={25} />
           <TextInput
             style={{ flex: 1, marginHorizontal: 15 }}
@@ -110,3 +101,15 @@ const Header = () => (
     <Ionicons name="person-circle-outline" size={35} />
   </MyHeader>
 );
+
+const styles = StyleSheet.create({
+  subHeaderContainer: {
+    padding: 12,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: colors.headerSearch,
+    opacity: 50,
+    borderRadius: 15,
+  }
+})
