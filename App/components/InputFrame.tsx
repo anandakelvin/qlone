@@ -2,7 +2,12 @@ import React, { ReactNode } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import colors from "../constants/colors";
 
-export default function InputFrame({ label, children }: {label: string, children: ReactNode}) {
+type Props = {
+  label: string;
+  children: ReactNode;
+}
+
+export default function InputFrame({ label, children }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

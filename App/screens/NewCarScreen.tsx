@@ -1,6 +1,6 @@
 import { Entypo, SimpleLineIcons } from "@expo/vector-icons";
 import { useFormik } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -14,41 +14,50 @@ import MyHeader from "../components/MyHeader";
 import MyScreen from "../components/MyScreen";
 import Subheader from "../components/Subheader";
 import { Picker } from "@react-native-picker/picker";
-import { delay } from "../utils/helper";
+import { delay, validateCar } from "../utils";
 import { nanoid } from "nanoid/non-secure";
 import { AppContext } from "../contexts";
-import { FuelType, Transmission } from "../types";
+import { Car, Cars, FuelType, Transmission } from "../types";
+import { useFocusEffect } from "@react-navigation/native";
+
+const initialFormikValues: Car = {
+  fuelType: "",
+  police: "",
+  name: "",
+  year: "",
+  transmission: "",
+}
 
 export default ({ route, navigation }) => {
   const { setCars } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
-    initialValues: {
-      fuelType: "",
-      police: "",
-      name: route.params.name,
-      year: "",
-      transmission: "",
-    },
-    onSubmit: (val) => {
-      setLoading(() => true);
-      delay().then(() => {
-        setCars((prev) => ({
-          ...prev,
-          [nanoid()]: {
-            ...val,
-          },
-        }));
-        navigation.navigate("Home");
-      });
-    },
+    initialValues: initialFormikValues,
+    onSubmit: handleSubmit,
+    validate: validateCar
   });
+
+  function handleSubmit(val: Car){
+    setLoading(() => true);
+    delay().then(() => {
+      setCars((prev: Cars) => ({
+        ...prev,
+        [nanoid()]: {...val},
+      }));
+      navigation.navigate("Home");
+    });
+  }
+  
+  useFocusEffect(useCallback(()=>{
+    formik.setFieldValue('name', route.params.name)
+  }, []))
+
   return (
     <MyScreen loading={loading}>
       <Header navigation={navigation} title="Tambahkan mobil" />
       <Subheader />
       <ScrollView style={{ margin: 15 }}>
-        <InputFrame label="Nama">
+        <InputFrame label="Nama*">
           <TextInput
             onChangeText={formik.handleChange("name")}
             onBlur={formik.handleBlur("name")}
@@ -57,7 +66,7 @@ export default ({ route, navigation }) => {
             placeholder="Input nama"
           />
         </InputFrame>
-        <InputFrame label="Nomor polisi">
+        <InputFrame label="Nomor polisi*">
           <TextInput
             onChangeText={formik.handleChange("police")}
             onBlur={formik.handleBlur("police")}
@@ -114,7 +123,7 @@ export default ({ route, navigation }) => {
 
 function Header({ navigation, title }) {
   return (
-    <MyHeader.RowStyle>
+    <MyHeader spacedBetween={true}>
       <TouchableOpacity onPressOut={() => navigation.goBack()}>
         <Entypo name="chevron-left" size={40} />
       </TouchableOpacity>
@@ -122,6 +131,6 @@ function Header({ navigation, title }) {
       <TouchableOpacity>
         <SimpleLineIcons name="options-vertical" size={25} />
       </TouchableOpacity>
-    </MyHeader.RowStyle>
+    </MyHeader>
   );
 }

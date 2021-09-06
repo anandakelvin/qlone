@@ -7,12 +7,10 @@ export default ({ children }: {children?: ReactNode}) => {
     <View
       style={{
         padding: 20,
-        paddingTop: 15,
+        paddingTop: 10,
         backgroundColor: colors.header,
         borderBottomLeftRadius: 35,
         borderBottomRightRadius: 35,
-        // margin: -10,
-        // borderWidth: 2,
       }}
     >
       {children}

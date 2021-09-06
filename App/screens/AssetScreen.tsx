@@ -3,6 +3,7 @@ import React from "react";
 import {
   ActivityIndicator,
   FlatList,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -14,59 +15,37 @@ import MyScreen from "../components/MyScreen";
 import SimpleButton from "../components/SimpleButton";
 import Subheader from "../components/Subheader";
 import colors from "../constants/colors";
-import { Car, CarRecord } from "../types";
-import { useFetchCar, useFetchHistories } from "../utils/hooks";
+import { CarRecord } from "../types";
+import { useFetchCar, useFetchHistories } from "../hooks";
 
 export default ({ route, navigation }) => {
   const { carId } = route.params;
   const [car, loading] = useFetchCar(carId);
   const [records, loadingRecords] = useFetchHistories();
-  console.log(records)
 
   return (
     <MyScreen loading={loading || loadingRecords}>
       <Header navigation={navigation} title={car && car.police} />
       <Subheader />
-      <Text
-        style={{
-          fontSize: 25,
-          fontWeight: "bold",
-          marginVertical: 15,
-          textAlign: "center",
-        }}
-      >
+      <Text style={styles.carName}>
         {car && car.name}
       </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          marginHorizontal: 50,
-        }}
-      >
-        {car && (
+      {car && (
+        <View style={styles.infoTags}>
           <>
-            <SimpleButton text={car.year} />
-            <SimpleButton text={car.transmission} />
-            <SimpleButton text={car.fuelType} />
+            {car.year && <SimpleButton text={car.year} />}
+            {car.transmission && <SimpleButton text={car.transmission} />}
+            {car.fuelType && <SimpleButton text={car.fuelType} />}
           </>
-        )}
-      </View>
-      <View
-        style={{
-          marginTop: 30,
-          borderTopWidth: 15,
-          borderBottomWidth: 15,
-          borderColor: colors.headerSearch,
-          padding: 15,
-        }}
-      >
-        {!loading && (
-          <LargeButton
-            onPressOut={() => navigation.navigate("VisitEntry", { carId })}
-            text="Catat Kunjungan"
-          />
-        )}
+        </View>
+      )}
+      <View style={styles.burgerBun} >
+      {!loading && (
+        <LargeButton
+          onPressOut={() => navigation.navigate("VisitEntry", { carId })}
+          text="Catat Kunjungan"
+        />
+      )}
       </View>
       {
         records &&
@@ -82,24 +61,21 @@ export default ({ route, navigation }) => {
               )}
               keyExtractor={(item) => item[0]}
               renderItem={({ item }) => {
-                const history: CarRecord = item[1];
-                const historyId: string = item[0];
+                const record: CarRecord = item[1];
+                const recordId: string = item[0];
+                console.log(record.km)
                 return (
                   <ListItem>
                     <FontAwesome name="car" size={35} />
                     <View style={{ marginLeft: 15 }}>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: 16,
-                          marginBottom: 5,
-                        }}
-                      >
-                        {new Date(history.timestamp).toDateString()}
+                      <Text style={styles.listItemDate}>
+                        {new Date(record.timestamp).toDateString()}
                       </Text>
-                      <Text
-                        style={{ color: colors.grey }}
-                      >{`KM ${history.km}${history.note && ' - Note: '+history.note}`}</Text>
+                      {record.km ? 
+                        <Text style={{ color: colors.grey }}>
+                          {`KM ${record.km}${record.note && ' - Note: '+record.note}`}
+                        </Text> : <></>
+                      }
                     </View>
                   </ListItem>
                 );
@@ -113,7 +89,7 @@ export default ({ route, navigation }) => {
 
 const Header = ({ navigation, title }) => {
   return (
-    <MyHeader.RowStyle>
+    <MyHeader spacedBetween={true}>
       <TouchableOpacity onPressOut={() => navigation.goBack()}>
         <Entypo name="chevron-left" size={40} />
       </TouchableOpacity>
@@ -121,6 +97,32 @@ const Header = ({ navigation, title }) => {
       <TouchableOpacity>
         <SimpleLineIcons name="options-vertical" size={25} />
       </TouchableOpacity>
-    </MyHeader.RowStyle>
+    </MyHeader>
   );
 };
+
+const styles = StyleSheet.create({
+  infoTags: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginHorizontal: 50,
+  },
+  burgerBun: {
+    marginTop: 30,
+    borderTopWidth: 15,
+    borderBottomWidth: 15,
+    borderColor: colors.headerSearch,
+    padding: 15,
+  },
+  carName: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginVertical: 15,
+    textAlign: "center",
+  },
+  listItemDate: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 5,
+  },
+})

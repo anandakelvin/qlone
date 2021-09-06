@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../contexts";
-import { Car, CarRecord, CarRecords, Cars } from "../types";
-import { delay } from "./helper";
-
-type ValType = Car|Cars|CarRecord|CarRecords|null
+import { AppContext } from "./contexts";
+import { Car, CarRecord, CarRecords, Cars } from "./types";
+import { delay } from "./utils";
 
 const useFetch = <T>(val: T): [T, boolean] => {
   const [loading, setLoading] = useState<boolean>(false);

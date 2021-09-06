@@ -8,14 +8,14 @@ export enum FuelType {
 export interface Car {
 	name: string;
 	police: string;
-	transmission: Transmission;
-	fuelType: FuelType;
-	year: string;
+	transmission?: Transmission | string;
+	fuelType?: FuelType | string;
+	year?: string;
 }
 export interface CarRecord {
 	timestamp: number;
 	carId: string;
-	km: number;
+	km?: string;
 	note?: string;
 }
 export type Cars = {

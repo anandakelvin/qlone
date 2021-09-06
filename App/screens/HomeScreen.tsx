@@ -18,7 +18,7 @@ import colors from "../constants/colors";
 import MyHeader from "../components/MyHeader";
 import Subheader from "../components/Subheader";
 import SimpleButton from "../components/SimpleButton";
-import { useFetchCars } from "../utils/hooks";
+import { useFetchCars } from "../hooks";
 import ListItem from "../components/ListItem";
 
 export default ({ navigation }) => {

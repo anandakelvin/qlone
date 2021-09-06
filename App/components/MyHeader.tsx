@@ -2,12 +2,14 @@ import React, { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import colors from "../constants/colors";
 
-const MyHeader = ({ children }: {children: ReactNode}) => {
-  return <View style={styles.container}>{children}</View>;
-};
-const Rowstyle = ({ children }: {children: ReactNode}) => {
+type Props = {
+  children: ReactNode;
+  spacedBetween?: boolean;
+}
+
+const MyHeader = ({ children, spacedBetween }: Props) => {
   return (
-    <View style={{ ...styles.container, justifyContent: "space-between" }}>
+    <View style={[styles.container, spacedBetween && {justifyContent: "space-between"}]}>
       {children}
     </View>
   );
@@ -19,9 +21,8 @@ const styles = StyleSheet.create({
   alignItems: "center",
   padding: 15,
   paddingTop: 50,
-  paddingBottom: 5,
+  paddingBottom: 10,
   backgroundColor: colors.header,}
 });
-MyHeader.RowStyle = Rowstyle;
 
 export default MyHeader;

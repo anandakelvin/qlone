@@ -1,76 +1,81 @@
 import { Entypo, SimpleLineIcons } from "@expo/vector-icons";
-import { Formik } from "formik";
-import React, { useContext, useState } from "react";
+import { Formik, useFormik } from "formik";
+import React, { useCallback, useContext, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import InputFrame from "../components/InputFrame";
 import MyHeader from "../components/MyHeader";
 import MyScreen from "../components/MyScreen";
 import Subheader from "../components/Subheader";
 import LargeButton from "../components/LargeButton";
-import { delay } from "../utils/helper";
+import { delay } from "../utils";
 import { nanoid } from "nanoid/non-secure";
 import { AppContext } from "../contexts";
+import { CarRecord, CarRecords } from "../types";
+import { useFocusEffect } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
+
+const initialFormikValues: CarRecord = {
+  km: "", note: "", carId: "", timestamp: 0,
+}
 
 export default ({ route, navigation }) => {
   const { setRecords } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const { carId } = route.params;
+  const formik = useFormik({
+    initialValues: initialFormikValues,
+    onSubmit: handleSubmit,
+  });
+
+  function handleSubmit(val: CarRecord){
+    setLoading(() => true);
+    delay().then(() => {
+      setRecords((prev: CarRecords) => ({
+        ...prev,
+        [nanoid()]: {...val},
+      }));
+      navigation.navigate("Asset", { ...route.params });
+    });
+  }
+
+  useFocusEffect(useCallback(()=>{
+    formik.setFieldValue('timestamp', Date.now())
+    formik.setFieldValue('carId', route.params.carId)
+  }, []))
 
   return (
     <MyScreen loading={loading}>
       <Header navigation={navigation} title="Catat Kunjungan" />
       <Subheader />
-      <Formik
-        initialValues={{ km: "", note: "" }}
-        onSubmit={({ km, note }) => {
-          setLoading(() => true);
-          delay().then(() => {
-            setRecords((prev) => ({
-              ...prev,
-              [nanoid()]: {
-                carId,
-                timestamp: Date.now(),
-                km: Number(km),
-                note,
-              },
-            }));
-            navigation.navigate("Asset", { ...route.params });
-          });
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={{ margin: 15 }}>
-            <InputFrame label="Kilometer masuk">
-              <TextInput
-                onChangeText={handleChange("km")}
-                onBlur={handleBlur("km")}
-                value={values.km}
-                style={{ flex: 1, padding: 10 }}
-                placeholder="Masukkan kilometer"
-                keyboardType="numeric"
-              />
-            </InputFrame>
-            <InputFrame label="Catatan">
-              <TextInput
-                onChangeText={handleChange("note")}
-                onBlur={handleBlur("note")}
-                value={values.note}
-                style={{ flex: 1, padding: 10 }}
-                placeholder="Catatan masuk"
-              />
-            </InputFrame>
-            <View style={{ margin: 10 }} />
-              <LargeButton onPressOut={handleSubmit} text="Catat kunjungan" />
-          </View>
-        )}
-      </Formik>
+      <ScrollView style={{ margin: 15 }}>
+        <InputFrame label="Kilometer masuk">
+          <TextInput
+            onChangeText={formik.handleChange("km")}
+            onBlur={formik.handleBlur("km")}
+            value={formik.values.km}
+            style={{ flex: 1, padding: 10 }}
+            placeholder="Masukkan kilometer"
+            keyboardType="numeric"
+          />
+        </InputFrame>
+        <InputFrame label="Catatan">
+          <TextInput
+            onChangeText={formik.handleChange("note")}
+            onBlur={formik.handleBlur("note")}
+            value={formik.values.note}
+            style={{ flex: 1, padding: 10 }}
+            placeholder="Catatan masuk"
+          />
+        </InputFrame>
+        <View style={{ margin: 10 }} />
+        <LargeButton onPressOut={formik.handleSubmit} text="Catat kunjungan" />
+      </ScrollView>
     </MyScreen>
   );
 };
 
 function Header({ navigation, title }) {
   return (
-    <MyHeader.RowStyle>
+    <MyHeader spacedBetween={true}>
       <TouchableOpacity onPressOut={() => navigation.goBack()}>
         <Entypo name="chevron-left" size={40} />
       </TouchableOpacity>
@@ -78,6 +83,6 @@ function Header({ navigation, title }) {
       <TouchableOpacity>
         <SimpleLineIcons name="options-vertical" size={25} />
       </TouchableOpacity>
-    </MyHeader.RowStyle>
+    </MyHeader>
   );
 }

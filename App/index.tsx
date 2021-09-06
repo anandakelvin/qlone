@@ -25,7 +25,7 @@ const initialRecords = {
   wekjda123123: {
     carId: "a1s1d2d3d4",
     timestamp: 1630481542651,
-    km: 29000,
+    km: '29000',
     note: "Kaca retak",
   },
 };

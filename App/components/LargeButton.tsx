@@ -2,7 +2,12 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import colors from "../constants/colors";
 
-export default ({ text, onPressOut, ...props }: {text: string, onPressOut(): void}) => {
+type Props = {
+  text: string;
+  onPressOut(): void;
+}
+
+export default ({ text, onPressOut }: Props) => {
   return (
     <TouchableOpacity
       style={{
